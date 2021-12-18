@@ -1,4 +1,5 @@
-﻿using System;
+﻿using StudentOrganizer.Core.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,23 +7,25 @@ using System.Threading.Tasks;
 
 namespace Domain.Models
 {
-    public class Ammunition
+    public class Ammunition : Entity
     {
-        public Guid Id { get; set; }
         public string Caliber { get; set; }
+        public string Type { get; set; }
         public string Producer { get; set; }
         public float Price { get; set; }
-        public int Quantity { get; set; }
         public int QuantityInStock { get; set; }
 
-        public Ammunition(string caliber, string producer, float price, int quantity, int quantityInStock)
+        public Ammunition(string caliber, string type, string producer, float price, int quantityInStock)
         {
-            Id = Guid.NewGuid();
             SetCaliber(caliber);
+            SetType(type);
             SetProducer(producer);
             Price = price;
-            Quantity = quantity;
             QuantityInStock = quantityInStock;
+        }
+        public Ammunition(Guid AmmunitionId)
+        {
+            Id = AmmunitionId;
         }
         public Ammunition()
         {
@@ -35,6 +38,14 @@ namespace Domain.Models
             }
             Caliber = caliber;
         }
+        public void SetType(string type)
+        {
+            if (string.IsNullOrWhiteSpace(type))
+            {
+                throw new Exception("Type cannot be empty.");
+            }
+            Type = type;
+        }
         public void SetProducer(string producer)
         {
             if (string.IsNullOrWhiteSpace(producer))
@@ -42,6 +53,14 @@ namespace Domain.Models
                 throw new Exception("Producer cannot be empty.");
             }
             Producer = producer;
+        }
+        public void SetPrice(float price)
+        {
+            if (string.IsNullOrWhiteSpace(price.ToString()))
+            {
+                throw new Exception("Cprice cannot be empty.");
+            }
+            Price = price;
         }
     }
 }

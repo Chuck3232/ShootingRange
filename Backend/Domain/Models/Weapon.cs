@@ -1,5 +1,4 @@
-﻿using Application.Enums;
-using StudentOrganizer.Core.Models;
+﻿using StudentOrganizer.Core.Models;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;

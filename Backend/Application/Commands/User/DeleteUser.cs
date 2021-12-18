@@ -5,11 +5,11 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace Application.Commands.Weapon
+namespace Application.Commands.User
 {
-    public class GetWeaponById
+    public class DeleteUser
     {
         [JsonIgnore]
-        public Guid WeaponId;
+        public Guid UserId { get; set; }
     }
 }

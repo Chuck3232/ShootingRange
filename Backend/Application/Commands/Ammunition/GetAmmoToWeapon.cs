@@ -5,9 +5,9 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace Application.Commands.Weapon
+namespace Application.Commands.Ammunition
 {
-    public class GetWeaponById
+    public class GetAmmoToWeapon
     {
         [JsonIgnore]
         public Guid WeaponId;

@@ -1,4 +1,5 @@
 ﻿using Domain;
+using Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -17,10 +18,21 @@ namespace Infrascture.DbContext
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
 			modelBuilder.Entity<Weapon>().Property(e => e.Id).ValueGeneratedNever();
-			
+            modelBuilder.Entity<Ammunition>().Property(e => e.Id).ValueGeneratedNever();
+            modelBuilder.Entity<User>()
+                .Property(u => u.Email)
+                .IsRequired();
 
-			base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<Role>()
+                .Property(r => r.Name)
+                .IsRequired();
+
+
+            base.OnModelCreating(modelBuilder);
 		}
 		public DbSet<Weapon> Weapons { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<Role> Roles { get; set; }
+        public DbSet<Ammunition> Ammunitions { get; set; }
     }
 }

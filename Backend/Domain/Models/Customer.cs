@@ -14,10 +14,10 @@ namespace Domain.Models
         public string LastName { get; set; }
         public string Email { get; set; }
         #nullable enable
-        public FirearmsLicense? FirearmsLicense { get; set; } 
-        public ShootingPatent? ShootingPatent { get; set; }
+        public string? FirearmsLicense { get; set; } 
 
-        public Customer(string firstName, string lastName, string email, Address address, FirearmsLicense? firearmsLicense, ShootingPatent? shootingPatent)
+
+        public Customer(string firstName, string lastName, string email, Address address, string? firearmsLicense )
         {
             Id = Guid.NewGuid();
             Address = address;
@@ -25,7 +25,7 @@ namespace Domain.Models
             SetLastName(lastName);
             SetMail(email);
             FirearmsLicense = firearmsLicense;
-            ShootingPatent = shootingPatent;
+
         }
         public Customer()
         {

@@ -17,23 +17,35 @@ namespace ShootingRange.Controlers
         public WeaponControler(IWeaponService weaponService)
         {
             _weaponService = weaponService;
-        }        
+        }
 
         [HttpPost]
         public async Task<IActionResult> CreateWeapon([FromBody] AddWeapon command)
-        {         
+        {
             await _weaponService.AddWeapon(command);
             return Ok();
         }
         [HttpGet]
         public ActionResult<List<WeaponDto>> GetAllWeapons()
-        {           
+        {
             return Ok(_weaponService.GetallWeapons());
         }
-        [HttpGet("{weaponId}")]
-        public ActionResult<List<WeaponDto>> GetWeapon(Guid WeaponId)
+        [HttpDelete("{weaponId}")]
+        public async Task<ActionResult> DeleteWeapon(Guid weaponId)
         {
-            return Ok(_weaponService.GetAsync(WeaponId));
+            var command = new GetWeaponById { WeaponId = weaponId };
+            await _weaponService.DeleteWeapon(command);
+            return Ok();
         }
+
+        [HttpPut("{weaponId}")]
+        public async Task<ActionResult> ResetNumberOfUse(Guid weaponId)
+        {
+            var command = new GetWeaponById { WeaponId = weaponId };
+            await _weaponService.ResetNumberOfUse(command);
+            return Ok();
+        }
+
+
     }
 }

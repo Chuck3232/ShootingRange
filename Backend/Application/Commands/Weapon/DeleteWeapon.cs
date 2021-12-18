@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Application.Commands.Weapon
 {
-    public class GetWeaponById
+    public class DeleteWeapon
     {
         [JsonIgnore]
         public Guid WeaponId;

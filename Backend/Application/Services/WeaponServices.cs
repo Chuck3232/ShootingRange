@@ -28,17 +28,25 @@ namespace Application.Services
             await _dbContext.SaveChangesAsync();
         }
 
-        public Task<Weapon> GetAsync(Guid id)
-        {
-            return _dbContext.Weapons.Where(w=>w.Id==id)
-                .Include(w=>w.Name)
-                .Include(w=>w.Price)
-                .FirstOrDefaultAsync();
-        }
-
-        public  IQueryable<Weapon> GetallWeapons()
+        public IQueryable<Weapon> GetallWeapons()
         {
             return _dbContext.Weapons;
+        }
+
+        public async Task DeleteWeapon(GetWeaponById command)
+        {
+            //var weaponToDelete = await _dbContext.Weapons.FirstOrDefaultAsync(w=>w.Id==command.WeaponId);
+            //if (weaponToDelete == null)
+            //    return new Exception("weapon doesn't exist"); 
+            _dbContext.Remove(_dbContext.Weapons.Where(w => w.Id == command.WeaponId).FirstOrDefault());
+            await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task ResetNumberOfUse(GetWeaponById command)
+        {
+            var weapon = await _dbContext.Weapons.FirstOrDefaultAsync(w => w.Id == command.WeaponId);
+            weapon.NumberOfUse = 0;
+            await _dbContext.SaveChangesAsync();
         }
     }
 }

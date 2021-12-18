@@ -1,4 +1,4 @@
-﻿using Application.Enums;
+﻿using StudentOrganizer.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,22 +7,24 @@ using System.Threading.Tasks;
 
 namespace Domain.Models
 {
-    public class User
+    public class User : Entity
     {
-        public Guid Id { get; set; }
+        public string Email { get; set; }
         public string FirstName { get;  set; }
         public string LastName { get;  set; }
-        public Role Role { get; set; }
-        public string Email { get;  set; }
+        public string PasswordHash { get; set; }
 
-        public User(string firstName, string lastName, Role role, string email)
+        public int RoleId { get;  set; }
+        public virtual Role Role { get; set; }
+
+        
+
+        public User(string email, string firstName, string lastName  )
         {
-            Id = Guid.NewGuid();
-            SetFirstName(firstName);
-            SetLastName(lastName);
             SetMail(email);
-            Role = role;
-           
+            SetFirstName(firstName);
+            SetLastName(lastName);           
+            RoleId = 5;
         }
         public void SetFirstName(string firstName)
         {
