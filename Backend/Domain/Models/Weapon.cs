@@ -1,9 +1,11 @@
-﻿using StudentOrganizer.Core.Models;
+﻿using Domain.Common;
+using StudentOrganizer.Core.Models;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Domain
+namespace Domain.Models
 {
     public class Weapon : Entity
     {        
@@ -13,16 +15,25 @@ namespace Domain
         public int NumberOfUse { get; set; }
         public string DateOfProduction { get; set; }
         public float Price { get; set; }
-        public int QuantityInStock { get; set; }
+        public bool InStock { get; set; }
 
         public Weapon(string name, string type, string caliber, string dateOfProduction, float price)
         {
             SetName(name);
-            Type = type;
+            SetType(type);
             SetCaliber(caliber);
             NumberOfUse = 0;
             SetDateOfProduction(dateOfProduction);
-            QuantityInStock = 1;
+            InStock = true;
+            SetPrice(price);
+        }
+        public void Update(string name, string type, string caliber, string dateOfProduction, float price, bool inStock)
+        {
+            SetName(name);
+            SetType(type);
+            SetCaliber(caliber);
+            SetDateOfProduction(dateOfProduction);
+            InStock = inStock;
             SetPrice(price);
         }
         public Weapon(Guid WeaponId)
@@ -33,11 +44,19 @@ namespace Domain
         public Weapon()
         {            
         }
+        public void SetType(string type)
+        {
+            if (string.IsNullOrWhiteSpace(type))
+            {
+                throw new AppException("Type name cannot be empty.");
+            }
+            Type = type;
+        }
         public void SetName(string name)
         {
             if (string.IsNullOrWhiteSpace(name))
             {
-                throw new Exception("First name cannot be empty.");
+                throw new AppException("First name cannot be empty.");
             }
             Name = name;
         }
@@ -45,7 +64,7 @@ namespace Domain
         {
             if (string.IsNullOrWhiteSpace(caliber))
             {
-                throw new Exception("Caliber cannot be empty.");
+                throw new AppException("Caliber cannot be empty.");
             }
             Caliber = caliber;
         }
@@ -53,7 +72,7 @@ namespace Domain
         {
             if (string.IsNullOrWhiteSpace(date))
             {
-                throw new Exception("Date cannot be empty.");
+                throw new AppException("Date cannot be empty.");
             }
             DateOfProduction = date;
         }
@@ -61,7 +80,7 @@ namespace Domain
         {
             if (float.IsNaN(price))
             {
-                throw new Exception("Price is NaN");
+                throw new AppException("Price is NaN");
             }
             Price=price;
         }

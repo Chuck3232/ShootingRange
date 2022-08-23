@@ -1,4 +1,5 @@
-﻿using System;
+﻿using StudentOrganizer.Core.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,18 +7,33 @@ using System.Threading.Tasks;
 
 namespace Domain.Models
 {
-    public class Order
+    public class Order : Entity
     {
-        public Guid Id { get; set; }
-        public User User { get; set; }
-        public IList<Weapon> Weapons{ get; set; }
-        public IList<Ammunition> Ammunitions { get; set; }
+        public Customer Customer { get; set; }
+        public ShootingSpot Spot { get; set; }
+        public  ICollection<WeaponOrder> Weapons{ get; set; }
+        public  ICollection<AmmoOrder> AmmoOrders { get; set; }
+        public string Status { get; set; }
         public int TrainigHours { get; set; }
-        public Order(User user)
+        public bool IsInstructor { get; set; }
+        public float Price { get; set; }
+        public Order(Customer customer, ShootingSpot spot)
         {
-            Id = Guid.NewGuid();
-            User = user;
+            Customer = customer;
+            Spot = spot;
+            Status = "open";
             TrainigHours = 0;
+            IsInstructor = false;
         }
+        public void Close(float price, int trainigHours)
+        {
+            TrainigHours = trainigHours;
+            Price = price;
+            Status = "closed";
+        }
+        public Order()
+        { }
+
+
     }
 }

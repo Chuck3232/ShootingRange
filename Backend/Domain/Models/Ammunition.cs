@@ -1,4 +1,5 @@
-﻿using StudentOrganizer.Core.Models;
+﻿using Domain.Common;
+using StudentOrganizer.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,10 +18,18 @@ namespace Domain.Models
 
         public Ammunition(string caliber, string type, string producer, float price, int quantityInStock)
         {
+            SetValues(caliber, type, producer, price, quantityInStock);
+        }
+        public void Update(string caliber, string type, string producer, float price, int quantityInStock)
+        {
+            SetValues(caliber, type, producer, price, quantityInStock);
+        }
+        public void SetValues(string caliber, string type, string producer, float price, int quantityInStock)
+        {
             SetCaliber(caliber);
             SetType(type);
             SetProducer(producer);
-            Price = price;
+            SetPrice(price);
             QuantityInStock = quantityInStock;
         }
         public Ammunition(Guid AmmunitionId)
@@ -34,7 +43,7 @@ namespace Domain.Models
         {
             if (string.IsNullOrWhiteSpace(caliber))
             {
-                throw new Exception("Caliber cannot be empty.");
+                throw new AppException("Caliber cannot be empty.");
             }
             Caliber = caliber;
         }
@@ -42,7 +51,7 @@ namespace Domain.Models
         {
             if (string.IsNullOrWhiteSpace(type))
             {
-                throw new Exception("Type cannot be empty.");
+                throw new AppException("Type cannot be empty.");
             }
             Type = type;
         }
@@ -50,7 +59,7 @@ namespace Domain.Models
         {
             if (string.IsNullOrWhiteSpace(producer))
             {
-                throw new Exception("Producer cannot be empty.");
+                throw new AppException("Producer cannot be empty.");
             }
             Producer = producer;
         }
@@ -58,7 +67,7 @@ namespace Domain.Models
         {
             if (string.IsNullOrWhiteSpace(price.ToString()))
             {
-                throw new Exception("Cprice cannot be empty.");
+                throw new AppException("Price cannot be empty.");
             }
             Price = price;
         }

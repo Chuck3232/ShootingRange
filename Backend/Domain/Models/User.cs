@@ -1,4 +1,5 @@
-﻿using StudentOrganizer.Core.Models;
+﻿using Domain.Common;
+using StudentOrganizer.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,11 +14,9 @@ namespace Domain.Models
         public string FirstName { get;  set; }
         public string LastName { get;  set; }
         public string PasswordHash { get; set; }
-
         public int RoleId { get;  set; }
         public virtual Role Role { get; set; }
-
-        
+        public string Status { get; set; }
 
         public User(string email, string firstName, string lastName  )
         {
@@ -25,12 +24,29 @@ namespace Domain.Models
             SetFirstName(firstName);
             SetLastName(lastName);           
             RoleId = 5;
+            Status = "outoffoffice";
+        }
+        public void Update(string email, string firstName, string lastName, int roleId)
+        {
+            SetMail(email);
+            SetFirstName(firstName);
+            SetLastName(lastName);
+            RoleId = roleId;
+        }
+        public void Active()
+        {
+            Status = "active";
+        }
+       
+
+        public User()
+        {
         }
         public void SetFirstName(string firstName)
         {
             if (string.IsNullOrWhiteSpace(firstName))
             {
-                throw new Exception("First name cannot be empty.");
+                throw new AppException("First name cannot be empty.");
             }
             FirstName = firstName;
         }
@@ -38,7 +54,7 @@ namespace Domain.Models
         {
             if (string.IsNullOrWhiteSpace(lastName))
             {
-                throw new Exception("Last name cannot be empty.");
+                throw new AppException("Last name cannot be empty.");
             }
             LastName = lastName;
         }
@@ -46,7 +62,7 @@ namespace Domain.Models
         {
             if (string.IsNullOrWhiteSpace(email))
             {
-                throw new Exception("Email cannot be empty.");
+                throw new AppException("Email cannot be empty.");
             }
             Email = email;
         }

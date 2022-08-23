@@ -1,7 +1,9 @@
 ﻿using Application.Commands.Ammunition;
+using Application.Dto;
 using Application.Services.Interface;
 using Domain.Models;
 using Infrascture.DbContext;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -11,6 +13,7 @@ using System.Threading.Tasks;
 
 namespace Application.Services
 {
+    
     public class AmmunitionServices : IAmmunitionServices
     {
         private readonly ApplicationDbContext _dbContext;
@@ -26,9 +29,41 @@ namespace Application.Services
             await _dbContext.AddAsync(ammo);
             await _dbContext.SaveChangesAsync();
         }
-        public IQueryable<Ammunition> GetallAmmo()
+        public async Task EditAmmo(AddAmmo command)
         {
-            return _dbContext.Ammunitions;
+            var ammo = await _dbContext.Ammunitions.FirstOrDefaultAsync(a => a.Id == command.Id);
+            if (ammo == null)
+                throw new KeyNotFoundException("Ammo doesn't exist");
+            ammo.Update(command.Caliber, command.Type, command.Producer, command.Price, command.QuantityInStock);
+            await _dbContext.SaveChangesAsync();
+        }
+        public List<AmmunitionDto> GetallAmmo()
+        {
+            var ammo = _dbContext.Ammunitions;
+            var ammoDto = ammo.Select(a => new AmmunitionDto
+            {
+                Id = a.Id,
+                Caliber = a.Caliber,
+                Type = a.Type,
+                Producer = a.Producer,
+                Price = a.Price,
+                QuantityInStock = a.QuantityInStock
+            });
+            return ammoDto.ToList();
+        }
+        public List<AmmunitionDto> GetAmmoToCustomer()
+        {
+            var ammo = _dbContext.Ammunitions.Where(a => a.QuantityInStock > 0);
+            var ammoDto = ammo.Select(a => new AmmunitionDto
+            {
+                Id = a.Id,
+                Caliber = a.Caliber,
+                Type = a.Type,
+                Producer = a.Producer,
+                Price = a.Price,
+                QuantityInStock = a.QuantityInStock
+            });
+            return ammoDto.ToList();
         }
 
         public async Task<List<Ammunition>> GetAmmoToWeapon(GetAmmoToWeapon command)

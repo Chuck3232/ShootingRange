@@ -1,11 +1,8 @@
 ﻿using Application.Commands.Ammunition;
-using Application.Commands.User;
+using Application.Dto;
 using Domain.Models;
 using StudentOrganizer.Infrastructure.IServices;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Application.Services.Interface
@@ -13,7 +10,9 @@ namespace Application.Services.Interface
     public interface IAmmunitionServices : IService
     {
         Task AddAmmo(AddAmmo command);
-        IQueryable<Ammunition> GetallAmmo();
+        List<AmmunitionDto> GetallAmmo();
         Task<List<Ammunition>> GetAmmoToWeapon(GetAmmoToWeapon command);
+        Task EditAmmo(AddAmmo command);
+        List<AmmunitionDto> GetAmmoToCustomer();
     }
 }

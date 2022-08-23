@@ -1,48 +1,65 @@
 ﻿using Application.Dto;
-using Application.Services;
 using Application.Services.Interface;
 using Application.Commands.Weapon;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 
 namespace ShootingRange.Controlers
 {
+    [EnableCors("MyPolicy")]
     [Route("Api/Weapon")]
+    [ApiController]
+    [Authorize]
     public class WeaponControler : ControllerBase
     {
-        private readonly IWeaponService _weaponService;
+        private readonly IWeaponServices _weaponServices;
 
-        public WeaponControler(IWeaponService weaponService)
+        public WeaponControler(IWeaponServices weaponService)
         {
-            _weaponService = weaponService;
+            _weaponServices = weaponService;
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateWeapon([FromBody] AddWeapon command)
+        public async Task<IActionResult> CreateWeapon([FromBody] WeaponDto command)
         {
-            await _weaponService.AddWeapon(command);
+            await _weaponServices.AddWeapon(command);
             return Ok();
         }
+  
+
         [HttpGet]
-        public ActionResult<List<WeaponDto>> GetAllWeapons()
+        public ActionResult<IEnumerable<WeaponDto>> GetAllWeapons()
         {
-            return Ok(_weaponService.GetallWeapons());
+            return Ok(_weaponServices.GetallWeapons());
+        }
+        [HttpPut("{weaponId}")]
+        public async Task<ActionResult> EditWeapon([FromBody] EditWeapon command, Guid weaponId)
+        {
+            command.Id = weaponId;
+            await _weaponServices.EditWeapon(command);
+            return Ok();
+        }
+        [HttpGet("customer")]
+        public ActionResult<List<WeaponDto>> GetAllWeaponsCustomer()
+        {
+            return Ok(_weaponServices.GetAllWeaponsToCustomer());
         }
         [HttpDelete("{weaponId}")]
         public async Task<ActionResult> DeleteWeapon(Guid weaponId)
         {
             var command = new GetWeaponById { WeaponId = weaponId };
-            await _weaponService.DeleteWeapon(command);
+            await _weaponServices.DeleteWeapon(command);
             return Ok();
         }
-
-        [HttpPut("{weaponId}")]
+        [HttpPut("reset/{weaponId}")]
         public async Task<ActionResult> ResetNumberOfUse(Guid weaponId)
         {
             var command = new GetWeaponById { WeaponId = weaponId };
-            await _weaponService.ResetNumberOfUse(command);
+            await _weaponServices.ResetNumberOfUse(command);
             return Ok();
         }
 

@@ -15,7 +15,6 @@ namespace Application.Commands.User
         public string Password { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-
         public int RoleId { get; set; }
 
     }
